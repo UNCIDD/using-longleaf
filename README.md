@@ -200,63 +200,7 @@ Here, you can see that the hostname is `g1803jles01.ll.unc.edu`, by typing comma
 
 You can now run your notebook, choosing the right environment in the upper right corner.
 
-##### Launch a jupyter notebook from longleaf and connect to it (thanks to Sarah from UNC ITS)
-Save these two files
-`create_notebook_password.sh`:
-```#!/bin/bash
-
-NOTEBOOK_CONFIG=~/.jupyter/jupyter_notebook_config.py
-
-# backup existing config, is any
-cp $NOTEBOOK_CONFIG ~/jupyter_notebook_config_backup.py
-
-mkdir ~/.jupyter
-echo "c = get_config();c.NotebookApp.password = u'"$(python -c 'from IPython.lib import passwd;print(passwd())')"'" > $NOTEBOOK_CONFIG
-```
-`run_jupyter.sh`:
-```bash
-#!/bin/bash
-XDG_RUNTIME_DIR=""
-#ipnport=$(shuf -i8000-9999 -n1)
-ipnport=8500
-ipnip=$(hostname -i)
-
-#module load  gcc/9.1.0 julia/1.6.3 dotnet/3.1.100 cuda/11.4 matlab/2022a anaconda/2021.11
-
-echo "Open a local terminal (on your laptop) and copy this string into it:"
-echo ""
-echo -e "\tssh -N -L $ipnport:$ipnip:$ipnport $(whoami)@longleaf.unc.edu"
-echo ""
-echo "In this local terminal enter your ONYEN password. Window will hang - that's ok."
-echo ""
-echo "Next copy the following url into your local web browser:"
-echo ""
-echo -e "\tlocalhost:$ipnport"
-echo ""
-echo "This will bring up jupyter in your local web browser. Log in using the jupyter notebook password you created."
-echo ""
-echo "When you are finished with your session and have logged out of jupyter in your local web brower be sure to return to this Longleaf terminal and type Ctrl-C (it might be necessary to do Ctrl-C repeatedly a few times). You should also do Ctrl-C back in your local terminal."
-~/.conda/envs/diffusion_torch/bin/jupyter lab --no-browser --port=$ipnport --ip=$ipnip 
-wait
-```
-
-For the first time only, create jupyter lab password:
-```bash
-sh create_notebook_password.sh
-```
-Then launch a batch job to create a jupyter notebook server you can connect to (here requests one volta-gpu for 18 hours)
-
-Launch a job for 18h on volta-gpu
-```bash
-srun --ntasks=1 --cpus-per-task=4 --mem=32G --time=18:00:00 --partition=volta-gpu --gres=gpu:4 --qos=gpu_access --output=out.out sh runjupyter.sh &
-```
-or on UNC-IDD patron node:
-```bash
-srun --ntasks=1 --time=18:00:00 -p jlessler --gres=gpu:1 --output=out.out sh runjupyter.sh &
-```
-
-then `cat out.out` which shows the instructions to go and make the ssh tunnel to connect on jupyter lab.
-
+** See advanced QOL to know how to run a jupyter notebook)**
 
 ### Get help
 Please don’t waste too much time, these problems are hard when you’ve not been introduced to them. Ask to the:
@@ -371,6 +315,65 @@ $ sbatch --dependency==afterany:5405575 postprocess.sbatch
 Submitted batch job 5405376
 ```
 will execute `postprocess.sbatch` after all the array jobs in `my_array_job.sbatch` terminate. This also work for non-array job
+
+## Advanced QOL
+
+##### Launch a jupyter notebook from longleaf and connect to it (thanks to Sarah from UNC ITS)
+Save these two files
+`create_notebook_password.sh`:
+```bash
+#!/bin/bash
+
+NOTEBOOK_CONFIG=~/.jupyter/jupyter_notebook_config.py
+# backup existing config, is any
+cp $NOTEBOOK_CONFIG ~/jupyter_notebook_config_backup.py
+mkdir ~/.jupyter
+echo "c = get_config();c.NotebookApp.password = u'"$(python -c 'from IPython.lib import passwd;print(passwd())')"'" > $NOTEBOOK_CONFIG
+```
+
+`run_jupyter.sh`:
+```bash
+#!/bin/bash
+XDG_RUNTIME_DIR=""
+#ipnport=$(shuf -i8000-9999 -n1)
+ipnport=8500
+ipnip=$(hostname -i)
+
+#module load  gcc/9.1.0 julia/1.6.3 dotnet/3.1.100 cuda/11.4 matlab/2022a anaconda/2021.11
+
+echo "Open a local terminal (on your laptop) and copy this string into it:"
+echo ""
+echo -e "\tssh -N -L $ipnport:$ipnip:$ipnport $(whoami)@longleaf.unc.edu"
+echo ""
+echo "In this local terminal enter your ONYEN password. Window will hang - that's ok."
+echo ""
+echo "Next copy the following url into your local web browser:"
+echo ""
+echo -e "\tlocalhost:$ipnport"
+echo ""
+echo "This will bring up jupyter in your local web browser. Log in using the jupyter notebook password you created."
+echo ""
+echo "When you are finished with your session and have logged out of jupyter in your local web brower be sure to return to this Longleaf terminal and type Ctrl-C (it might be necessary to do Ctrl-C repeatedly a few times). You should also do Ctrl-C back in your local terminal."
+~/.conda/envs/diffusion_torch/bin/jupyter lab --no-browser --port=$ipnport --ip=$ipnip 
+wait
+```
+
+For the first time only, create jupyter lab password:
+```bash
+sh create_notebook_password.sh
+```
+Then launch a batch job to create a jupyter notebook server you can connect to (here requests one volta-gpu for 18 hours)
+
+Launch a job for 18h on volta-gpu
+```bash
+srun --ntasks=1 --cpus-per-task=4 --mem=32G --time=18:00:00 --partition=volta-gpu --gres=gpu:4 --qos=gpu_access --output=out.out sh runjupyter.sh &
+```
+or on UNC-IDD patron node:
+```bash
+srun --ntasks=1 --time=18:00:00 -p jlessler --gres=gpu:1 --output=out.out sh runjupyter.sh &
+```
+then `cat out.out` which shows the instructions to go and make the ssh tunnel to connect on jupyter lab.
+
 
 
 

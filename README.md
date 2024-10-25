@@ -19,12 +19,12 @@
 ### Tips
 * Keep each project in its own folder/set of folders.
 * It’s easier if your file names don’t contain a space, dot or `()`.
-* Do not put big data file`s your home directory; put those on scratch or proj.
+* Do not put big data file`s your home directory;
 * If you think you’ll want to share files with a labmate, keep all files for  that work in your PI’s `/proj/` space where all labmates 
     can see each other’s files.
 * Every resource on a cluster is shared (storage, compute, ...) so be mindful of others and follow best practices.
 * Only ask for resources you need in your SLURM  more resources = longer wait
-* When to use Open On Demand vs command-line? It depends. Some things are only possible with the command-line, but if you are not that confident in a unix shell, you should get around with OOD.
+* When to use Open On Demand vs command-line? It depends. Some things are only possible with the command line (the most limiting thing is the 10 hours limit), but if you are not that confident in a unix shell, you should get around with OOD.
 
 ## A. Create an account
 
@@ -71,6 +71,7 @@ rsync -av --prune-empty-dirs --include='*/' --include="*.rds" --exclude='*' chad
 ```
 with `a` for recursive, `v` for verbose (view progress),  `--include/exclude=` for pattern matching (if you come from scp, way exclude/include work is different, the above gets all files ending in `.rds` from the blue longleaf folder to the green local folder). Since I used this pattern I remove the empty directory otherwise the whole folder structure is copied. Use google/chatGPT to find the good command.
 * Via Open On-demand
+* Using a FTP like FileZilla
 
 ## 3. Load modules (software environment)
 * See all modules available for you to load
@@ -233,7 +234,6 @@ sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtr
   * `cd ..` go back one directory
   * `cd` without arguments bring you to home (sometimes)
   * `pwd` tells you where you are
-
 
 ## A. Slurm script examples (copy these and adapt)
 #### Single cpu R job, general partition, 

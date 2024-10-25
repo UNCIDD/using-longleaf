@@ -163,11 +163,22 @@ Here we see that this job has been memory constrained so the CPU time was not ef
 #### Quality of life things
 ##### Not having to enter your ssh password every time
 (see also [unix - How do I set up SSH so I don't have to type my password? - Super User](https://superuser.com/questions/8077/how-do-i-set-up-ssh-so-i-dont-have-to-type-my-password))
-Type on your computer
+Type on your computer if you have a Mac or a Linux Machine:
 ```bash
 ssh-keygen
 ssh-copy-id -i ~/.ssh/id_rsa.pub chadi@longleaf.unc.edu
 ```
+On Windows WSL, as `ssh-copy-id` does not exist, you need to (thanks Claire):
+```bash
+$ ssh-keygen
+# And when it asked me for a file name I just left it blank and pressed enter. And it output the following info:
+# Your identification has been saved in C:\Users\cpsmit/.ssh/id_ed25519
+# Your public key has been saved in C:\Users\cpsmit/.ssh/id_ed25519.pub
+# And then I ran
+type .ssh\id_ed25519.pub | ssh cpsmit@longleaf.unc.edu "cat >> .ssh/authorized_keys"
+```
+
+
 
 ##### Not having to enter your git password 6 times per day
 Already installed

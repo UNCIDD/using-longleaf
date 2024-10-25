@@ -104,8 +104,11 @@ module purge
 module load r/4.2.1
 
 Rscript mycode.R
+sacct -j $SLURM_JOB_ID --format='JobID,user,elapsed, cputime, totalCPU,MaxRSS,MaxVMSize, ncpus,NTasks,ExitCode'
+
 ```
-As this job is long, I have added two sbatch command to send me an email at the start and the end of the job (you could also add `FAIL`, `ALL`, `TIME_LIMIT`, `ARRAY_TASKS`, ...)
+As this job is long, I have added two sbatch command to send me an email at the start and the end of the job (you could also add `FAIL`, `ALL`, `TIME_LIMIT`, `ARRAY_TASKS`, ...).
+The last `sacct` command prints a bit of diagnostic after your script.
 
 #### Multi-core R job
 Submits a 24-core, single-node R job. Here your R script needs to handle the parallelization itself (e.g. because it calls stan, or `doParallel`)
@@ -140,6 +143,7 @@ if you need more memory, replace `#SBATCH --mem=3g` by e.g:
 module purge
 flepimop-calibrate -c config_SMH_Flu_2024_R1_allflu_medVax_H3_training_monthly_emcee.yml --nwalkers 1000 --jobs 500 --niterations 5000 --nsamples 250 --id SMH_Flu_2024_R1_allflu_medVax_H3_training_monthly_emcee-20241004_120000-BIG  > out_fit256.out 2>&1
 ```
+Note that here, I capture the output to my program using `> out_fit256.out 2>&1` to the file `out_fit256.out`, this is useful if you want to just one file (and it works with R jobs too)
 
 #### Job-array
 % sbatch job1.sbatchSubmitted batch job 5405575% sbatch --dependency=after:5405575 job2.sbatchSubmitted batch job 5405576Other options:sbatch --dependency=after:5405575 job2.sbatchsbatch --dependency=afterany:5405575 job2.sbatch<img width="402" alt="image" src="https://github.com/user-attachments/assets/f166148f-75cc-4ed9-be33-795b64052488">
@@ -155,6 +159,16 @@ Get an
   * `cd ..` go back one directory
   * `cd` without arguments bring you to home (sometimes)
   * `pwd` tells you where you are
+ 
+
+### Advanced
+There are limits on the number of resources a single person or job can request. Some of the limits are set at the user level (across all their jobs), most are set at the partition (and "qos") levels.
+```bash
+scontrol show partition general
+sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtrespu%20,maxjobs,mintres,MaxSubmitJobsPerUser,maxtrespa
+sacctmgr show user where name=<ONYEN> withassoc format=user,DefaultQOS,account%20,qos
+```
+
  
 
 

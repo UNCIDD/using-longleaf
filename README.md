@@ -42,10 +42,10 @@ This gets you to your home folder (/nas/longleaf/home/<onyen>) on a login node
 
 
 ## 2. Load modules (software environment)
-* See all modules available for you to load: 
-  * `module avail`         for example: module avail python
-  *`module keyword`
-  *`module spider`
+* See all modules available for you to load
+  * `module avail` for example: module avail python
+  * `module keyword`
+  * `module spider`
 * Add a module to my session:   `module load <module name>`
 * See all loaded in **my** session:  `module list`
 * Remove module from session: `module rm <module name>`

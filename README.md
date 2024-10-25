@@ -175,7 +175,7 @@ $ ssh-keygen
 # Your identification has been saved in C:\Users\cpsmit/.ssh/id_ed25519
 # Your public key has been saved in C:\Users\cpsmit/.ssh/id_ed25519.pub
 # And then I ran
-type .ssh\id_ed25519.pub | ssh cpsmit@longleaf.unc.edu "cat >> .ssh/authorized_keys"
+$ type .ssh\id_ed25519.pub | ssh cpsmit@longleaf.unc.edu "cat >> .ssh/authorized_keys"
 ```
 
 

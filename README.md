@@ -190,7 +190,7 @@ and start the compute node by launching an interactive job on it:
  srun -p jlessler --gres=gpu:1 --pty /bin/bash
  ```
 Here, you can see that the hostname is `g1803jles01.ll.unc.edu`, by typing command `hostname`. Then, the rest is done from your computer. Install the VS Code remote extensions, and and add a remote config with
- ````
+ ```
  Host uncidd-patronnode
    HostName g1803jles01.ll.unc.edu
    ProxyJump longleaf.unc.edu

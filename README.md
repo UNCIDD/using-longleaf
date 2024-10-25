@@ -14,10 +14,10 @@ Follow the steps listed on [Request a Cluster Account](https://help.rc.unc.edu/r
 * OK to hold inactive data sets like a near-line archive
 * 10 TB quota per user
 ### `/work/users/<o>/<n>/<onyen>` storage
-* built for high-throughput and data-intensive computing
+* built for high-throughput and data-intensive computing (very fast)
 * for data **actively being computed on and processed**
+* NOT intended to be a personal storage location
 * Be fair and don't store much (in other university, there would be an auto-delete policy)
-* NOT intended to be a personal storage location; /work is for data actively being processed with high IO requirements
 * 10 TB quota per user.
 
 ### `/proj` storage Proj Space

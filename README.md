@@ -179,7 +179,6 @@ $ type .ssh\id_ed25519.pub | ssh cpsmit@longleaf.unc.edu "cat >> .ssh/authorized
 ```
 
 
-
 ##### Not having to enter your git password 6 times per day
 Already installed
 Type the following line so git remembers your credential and you don't have to enter your token 6 times per day:
@@ -225,7 +224,7 @@ SLURM is universal, so Google and LLMs can help
 There are limits on the number of resources a single person or job can request. Some of the limits are set at the user level (across all their jobs), most are set at the partition (and "qos") levels.
 ```bash
 scontrol show partition general
-sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtrespu%20,maxjobs,mintres,MaxSubmitJobsPerUser,maxtrespa
+sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtrespu%20,maxjobs,mintres,MaxSubmitJobsPerUser
 ```
 
 ### Appendix B: command-line
@@ -234,10 +233,7 @@ sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtr
   * `cd ..` go back one directory
   * `cd` without arguments bring you to home (sometimes)
   * `pwd` tells you where you are
- 
 
-how user where name=<ONYEN> withassoc format=user,DefaultQOS,account%20,qos
-```
 
 ## A. Slurm script examples (copy these and adapt)
 #### Single cpu R job, general partition, 

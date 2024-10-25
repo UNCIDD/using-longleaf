@@ -14,15 +14,16 @@ Follow the steps listed on [Request a Cluster Account](https://help.rc.unc.edu/r
 * OK to hold inactive data sets like a near-line archive
 * 10 TB quota per user
 ### `/work/users/<o>/<n>/<onyen>` storage
-* built for high-throughput and data-intensive computing, and intended for data actively being computed on, accessed and processed by systems such as Longleaf
+* built for high-throughput and data-intensive computing
+* for data **actively being computed on and processed**
+* Be fair and don't store much (in other university, there would be an auto-delete policy)
 * NOT intended to be a personal storage location; /work is for data actively being processed with high IO requirements
-* 10 TB quota per user. Be fair and don't store much (in other university, there would be an auto-delete policy
+* 10 TB quota per user.
 
 ### `/proj` storage Proj Space
 * equivalent to home directory for a team 
 * `/proj` space is available to PIs (only, email research@unc.edu) upon request.
 * Shared datasets, code, ...
-
 
 ## 1. Connect to longleaf
 ```bash

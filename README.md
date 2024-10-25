@@ -17,6 +17,14 @@
 * If you think you’ll want to share files with a labmate, keep all files for  that work in your PI’s `/proj/` space where all labmates 
     can see each other’s files.
 * Every resource on a cluster is shared (storage, compute, ...) so be mindful of others and follow best practices.
+* Only ask for resources you need in your SLURM  more resources = longer wait
+
+### debug
+You need to build up step-by-step the job you want to run:
+1. Debug code: Confirm code runs, first locally then on login node (but not for long) as desired on a small data sample
+2. Debug submission: Submit a test job on interact partition using the submission code with little time (5 min.s) to confirm necessary modules & packages are loaded and paths to files are correct.
+3. Add checkpoints and print to your code to see movement while it's running, or do intermediate files.
+4. Tailor SLURM for next round of jobs based on what memory/time previously successful jobs actually used/needed.
 
 ## A. Create an account
 

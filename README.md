@@ -20,7 +20,7 @@ OK to hold inactive data sets like a near-line archive
 * There is a 10 TB quota per user.
 
 ### `/proj` storage Proj Space
-“/proj” space is available to PIs (only, email research@unc.edu) upon request. An home directory for a team
+`/proj` space is available to PIs (only, email research@unc.edu) upon request. An home directory for a team 
 
 
 ## 1. Connect to longleaf

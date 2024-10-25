@@ -75,6 +75,18 @@ This gets you to your home folder (/nas/longleaf/home/<onyen>) on a login node
 
 ## X. Slurm script
 
+* `--mem=50g` memory limit
+* `--time= (-t)`   --time= 1-22:33:44 for 1 day, 22 hours, 33 minutes and 44 seconds of timelimit
+* `--partition= (-p) <partition name>`
+* `--output= (-o) <filename>` where is located the file output.
+    * `-o /nas/longleaf/home/<onyen>/class_jobs/myJob%j.out`
+* `-J (--jobname) <name>` 
+* `--ntasks (-n) <number of tasks>     -n 1`
+ used for parallel (non-serial) jobs
+* `-N (--nodes=)`
+* `-N 1` for all longleaf jobs [dogwood allows more]
+
+
 ### Examples (copy these and adapt)
 #### Single cpu R job, general partition, 
 7-day runtime limit, 10 GB memory limit

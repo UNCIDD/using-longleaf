@@ -1,7 +1,22 @@
 # using-longleaf
 
-Some general remarks:
-* Every ressources on a cluster is shared (storage, compute, ...) so be mindful of others and follow best-practices.
+## Workflow
+### Checklist for submitting a slurm job
+- [ ] Do you know where on Longleaf are your data files (name and paths)? 
+- [ ] Do you know where on Longleaf is your app’s script (name and path)?
+- [ ] Test that you have the correct modules loaded
+- [ ] Test your app’s command by typing it and hitting Cntl^C a few SECONDS later.  Fix typos and not found errors.
+- [ ] Include full path references to files and scripts in your SLURM (e.g.: /nas/longleaf/home/myonyen/scripts/abc.py)
+- [ ] Use seff <job_id> command on an old jobs (yours or labmate’s)
+- [ ] Once you type sbatch …  Make a note of job id and description of what it is doing (vs your other jobs).
+- [ ] Last step, efficiency! Type: `seff <job id>` to inform next time best memory and time settings.
+### Tips
+* Keep each project in its own folder/set of folders.
+* It’s easier if your file names don’t contain a space, dot or `()`.
+* Do not put big data file`s your home directory; put those on scratch or proj.
+* If you think you’ll want to share files with a labmate, keep all files for  that work in your PI’s `/proj/` space where all labmates 
+    can see each other’s files.
+* Every resource on a cluster is shared (storage, compute, ...) so be mindful of others and follow best practices.
 
 ## A. Create an account
 
@@ -58,6 +73,8 @@ This gets you to your home folder (/nas/longleaf/home/<onyen>) on a login node
   * `cd ..` go back one directory
   * `cd` without arguments bring you to home (sometimes)
   * `pwd` tells you where you are
+ 
+
 
 
 

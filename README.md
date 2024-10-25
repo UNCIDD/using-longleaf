@@ -5,11 +5,15 @@
 - [ ] Do you know where on Longleaf are your data files (name and paths)? 
 - [ ] Do you know where on Longleaf is your app’s script (name and path)?
 - [ ] Test that you have the correct modules loaded
+- [ ] Test that your app works locally (on a small data sample if necessary)
 - [ ] Test your app’s command by typing it and hitting Cntl^C a few SECONDS later.  Fix typos and not found errors.
+- [ ] Add checkpoints and print to your code to see movement while it's running, or do intermediate files.
 - [ ] Include full path references to files and scripts in your SLURM (e.g.: /nas/longleaf/home/myonyen/scripts/abc.py)
 - [ ] Use seff <job_id> command on an old jobs (yours or labmate’s)
 - [ ] Once you type sbatch …  Make a note of job id and description of what it is doing (vs your other jobs).
 - [ ] Last step, efficiency! Type: `seff <job id>` to inform next time best memory and time settings.
+- [ ] Tailor SLURM for next round of jobs based on what memory/time previously successful jobs actually used/needed.
+
 ### Tips
 * Keep each project in its own folder/set of folders.
 * It’s easier if your file names don’t contain a space, dot or `()`.
@@ -18,13 +22,6 @@
     can see each other’s files.
 * Every resource on a cluster is shared (storage, compute, ...) so be mindful of others and follow best practices.
 * Only ask for resources you need in your SLURM  more resources = longer wait
-
-### debug
-You need to build up step-by-step the job you want to run:
-1. Debug code: Confirm code runs, first locally then on login node (but not for long) as desired on a small data sample
-2. Debug submission: Submit a test job on interact partition using the submission code with little time (5 min.s) to confirm necessary modules & packages are loaded and paths to files are correct.
-3. Add checkpoints and print to your code to see movement while it's running, or do intermediate files.
-4. Tailor SLURM for next round of jobs based on what memory/time previously successful jobs actually used/needed.
 
 ## A. Create an account
 

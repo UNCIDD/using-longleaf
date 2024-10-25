@@ -2,15 +2,15 @@
 
 ## Workflow
 ### Checklist for submitting a slurm job
-- [ ] Do you know where on Longleaf are your data files (name and paths)? 
-- [ ] Do you know where on Longleaf is your app’s script (name and path)?
+- [ ] Do you know where are your data files on Longleaf (name and paths)? 
+- [ ] Do you know where is your app’s script  on Longleaf (name and path)?
 - [ ] Test that you have the correct modules loaded
 - [ ] Test that your app works locally (on a small data sample if necessary)
-- [ ] Test your app’s command by typing it and hitting Cntl^C a few SECONDS later.  Fix typos and not found errors.
+- [ ] Test your app’s command by typing it and hitting Crtl^C a few SECONDS later.  Fix typos and not found errors.
 - [ ] Add checkpoints and print to your code to see movement while it's running, or do intermediate files.
 - [ ] Include full path references to files and scripts in your SLURM (e.g.: /nas/longleaf/home/myonyen/scripts/abc.py)
-- [ ] Use seff <job_id> command on an old jobs (yours or labmate’s)
-- [ ] Once you type sbatch …  Make a note of job id and description of what it is doing (vs your other jobs).
+- [ ] Use `seff <job_id>` command on an old jobs (yours or labmate’s)
+- [ ] Once you type `sbatch …`  Make a note of job id and description of what it is doing (vs your other jobs).
 - [ ] Last step, efficiency! Type: `seff <job id>` to inform next time best memory and time settings.
 - [ ] Tailor SLURM for next round of jobs based on what memory/time previously successful jobs actually used/needed.
 
@@ -105,7 +105,8 @@ general partition, 2-hour runtime limit, 3 GB memory limit.
 #SBATCH -t 02:00:00
 #SBATCH --mem=3g
 #SBATCH -n 24
-
+module purge
+module load r/4.2.1
 Rscript mycode.R
 ```
 
@@ -114,9 +115,8 @@ if you need more memory, replace `#SBATCH --mem=3g` by e.g:
 #SBATCH --qos=bigmem_access 
 #SBATCH --mem=500g
 ```
-
-
-#### 1 node (N) 1 task (n) to the general partition  for 2 days and 20 hours, with this task needing 256 cpus
+#### example flepiMoP job
+1 node (N) 1 task (n) to the general partition  for 2 days and 20 hours, with this task needing 256 cpus
 ```bash
 #!/bin/bash
 #SBATCH -N 1
@@ -128,6 +128,9 @@ if you need more memory, replace `#SBATCH --mem=3g` by e.g:
 module purge
 flepimop-calibrate -c config_SMH_Flu_2024_R1_allflu_medVax_H3_training_monthly_emcee.yml --nwalkers 1000 --jobs 500 --niterations 5000 --nsamples 250 --id SMH_Flu_2024_R1_allflu_medVax_H3_training_monthly_emcee-20241004_120000-BIG  > out_fit256.out 2>&1
 ```
+
+#### Job-array
+% sbatch job1.sbatchSubmitted batch job 5405575% sbatch --dependency=after:5405575 job2.sbatchSubmitted batch job 5405576Other options:sbatch --dependency=after:5405575 job2.sbatchsbatch --dependency=afterany:5405575 job2.sbatch<img width="402" alt="image" src="https://github.com/user-attachments/assets/f166148f-75cc-4ed9-be33-795b64052488">
 
 
 

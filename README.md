@@ -73,7 +73,7 @@ rsync -av --prune-empty-dirs --include='*/' --include="*.rds" --exclude='*' chad
 with `a` for recursive, `v` for verbose (view progress),  `--include/exclude=` for pattern matching (if you come from scp, way exclude/include work is different, the above gets all files ending in `.rds` from the blue longleaf folder to the green local folder). Since I used this pattern I remove the empty directory otherwise the whole folder structure is copied. Use google/chatGPT to find the good command.
 * Via Open On-demand
 
-## 2. Load modules (software environment)
+## 3. Load modules (software environment)
 * See all modules available for you to load
   * `module avail` for example: module avail python
   * `module keyword`
@@ -83,15 +83,8 @@ with `a` for recursive, `v` for verbose (view progress),  `--include/exclude=` f
 * Remove module from session: `module rm <module name>`
 * Save current session's list of modules to load automatically every time I log in and for every job: `module save`
 
-
-## 3.
-Run the job:
-```batch
-sbatch my_batch_script.run
-```
-This command return immediately, you can go and run other jobs, party and all until it finishes. But you might want to monito
-
-## X. Slurm script
+## 3. Make a slurm script
+(see example **appendix A.**)
 
 * `--mem=50g` memory limit
 * `--time= (-t)`   --time= 1-22:33:44 for 1 day, 22 hours, 33 minutes and 44 seconds of timelimit
@@ -105,7 +98,100 @@ This command return immediately, you can go and run other jobs, party and all un
 * `-N 1` for all longleaf jobs [dogwood allows more]
 
 
-### Examples (copy these and adapt)
+## 4. Run your job
+Run the job:
+```batch
+sbatch my_batch_script.run
+```
+This command return immediately, you can go and run other jobs, party and all until it finishes. But you might want to monito
+
+
+
+## Monitor and Diagnosis
+### During my run
+
+#### Status
+You may either use Open On Demand (under Jobs > Active jobs), or `squeue` to print the job queue. To print only the jobs submitted by your user, type
+```bash
+$ squeue -u <onyen>
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          52178012  a100-gpu reproduc    onyen PD       0:00      1 (Resources)
+          52178013  a100-gpu finetuni    onyen PD       0:00      1 (Priority)
+          52078265  a100-gpu slurm_bs    onyen  R 2-14:58:08      1 g141606
+          52077597  a100-gpu slurm_bs    onyen  R 2-15:06:04      1 g141605
+          52176006  a100-gpu  jupyter    onyen  R    5:28:52      1 g141606
+       52092063_28  a100-gpu estimate    onyen  R 1-17:54:50      1 g141605
+       52147221_59  a100-gpu       e2    onyen  R 1-03:41:09      1 g141604
+       52147221_58  a100-gpu       e2    onyen  R 1-04:07:46      1 g141604
+       52147221_57  a100-gpu       e2    onyen  R 1-04:19:23      1 g141604
+       52147221_55  a100-gpu       e2    onyen  R 1-04:20:29      1 g141607
+```
+where the JOB_ID contains the job ID. We see that the last 5 jobs here are array jobs (see below: one jobs launch several subjobs). We also see the job status:
+* R: running
+* PD: pending
+and the time it's been running. The last column provides either the node on which a running job is currently running (e.g g141604). Note that several jobs sometimes run on the same node. And if it is in queue (PD), the reason why. If you don't see your job in `squeue`, it means that it has terminated.
+
+
+#### Logs
+If you have  regular prints/progress bars and all, this command prints the log file (either the default slurm_JOBID.out or the redirected one) for your command and updates it live:
+```bash
+tail -f your_log.out
+```
+This is where you’ll see any error. Note that this command only shows the live change, sometime you might want to show the full log (e.g if the process has been terminated) using:
+```bash
+cat your_log.out
+```
+
+### After my job is done
+run seff (only after the job is finished)
+```bash
+$ seff 36460183
+Job ID: 36460183
+Cluster: longleaf
+User/Group: chadi/users
+State: CANCELLED (exit code 0)
+Nodes: 1
+Cores per node: 256
+CPU Utilized: 16-12:57:33
+CPU Efficiency: 21.88% of 75-14:24:00 core-walltime
+Job Wall-clock time: 07:05:15
+Memory Utilized: 950.36 GB
+Memory Efficiency: 127.56% of 745.00 GB
+```
+Here we see that this job has been memory constrained so the CPU time was not efficiently utilized, and should be re-run with more memory
+
+
+#### Quality of life things
+Get an
+
+
+### Get help
+Please don’t waste too much time, these problems are hard when you’ve not been introduced to them. Ask to the:
+* `#computing channel` on the UNC-IDD Slack
+* research@unc.edu (business hours, M-F)
+
+Both are very helpful if you provide enough details! Always provide the full error message + your onyen and the job ID if known.
+SLURM is universal, so Google and LLMs can help
+
+### Advanced
+There are limits on the number of resources a single person or job can request. Some of the limits are set at the user level (across all their jobs), most are set at the partition (and "qos") levels.
+```bash
+scontrol show partition general
+sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtrespu%20,maxjobs,mintres,MaxSubmitJobsPerUser,maxtrespa
+sacctmgr s
+
+### Appendix B: command-line
+* Get around
+  * `cd /relative/or/absolute/path/to/dir/` go to a specific directory
+  * `cd ..` go back one directory
+  * `cd` without arguments bring you to home (sometimes)
+  * `pwd` tells you where you are
+ 
+
+how user where name=<ONYEN> withassoc format=user,DefaultQOS,account%20,qos
+```
+
+## A. Slurm script examples (copy these and adapt)
 #### Single cpu R job, general partition, 
 7-day runtime limit, 10 GB memory limit
 ```bash
@@ -193,90 +279,6 @@ Submitted batch job 5405376
 ```
 will execute `postprocess.sbatch` after all the array jobs in `my_array_job.sbatch` terminate. This also work for non-array job
 
-
-## Monitor and Diagnosis
-
-
-### During my run
-
-#### Status
-You may either use Open On Demand (under Jobs > Active jobs), or `squeue` to print the job queue. To print only the jobs submitted by your user, type
-```bash
-$ squeue -u <onyen>
-             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-          52178012  a100-gpu reproduc    onyen PD       0:00      1 (Resources)
-          52178013  a100-gpu finetuni    onyen PD       0:00      1 (Priority)
-          52078265  a100-gpu slurm_bs    onyen  R 2-14:58:08      1 g141606
-          52077597  a100-gpu slurm_bs    onyen  R 2-15:06:04      1 g141605
-          52176006  a100-gpu  jupyter    onyen  R    5:28:52      1 g141606
-       52092063_28  a100-gpu estimate    onyen  R 1-17:54:50      1 g141605
-       52147221_59  a100-gpu       e2    onyen  R 1-03:41:09      1 g141604
-       52147221_58  a100-gpu       e2    onyen  R 1-04:07:46      1 g141604
-       52147221_57  a100-gpu       e2    onyen  R 1-04:19:23      1 g141604
-       52147221_55  a100-gpu       e2    onyen  R 1-04:20:29      1 g141607
-```
-where the JOB_ID contains the job ID. We see that the last 5 jobs here are array jobs (see below: one jobs launch several subjobs). We also see the job status:
-* R: running
-* PD: pending
-and the time it's been running. The last column provides either the node on which a running job is currently running (e.g g141604). Note that several jobs sometimes run on the same node. And if it is in queue (PD), the reason why. If you don't see your job in `squeue`, it means that it has terminated.
-
-
-#### Logs
-If you have  regular prints/progress bars and all, this command prints the log file (either the default slurm_JOBID.out or the redirected one) for your command and updates it live:
-```bash
-tail -f your_log.out
-```
-This is where you’ll see any error. Note that this command only shows the live change, sometime you might want to show the full log (e.g if the process has been terminated) using:
-```bash
-cat your_log.out
-```
-
-### After my job is done
-run seff (only after the job is finished)
-```bash
-$ seff 36460183
-Job ID: 36460183
-Cluster: longleaf
-User/Group: chadi/users
-State: CANCELLED (exit code 0)
-Nodes: 1
-Cores per node: 256
-CPU Utilized: 16-12:57:33
-CPU Efficiency: 21.88% of 75-14:24:00 core-walltime
-Job Wall-clock time: 07:05:15
-Memory Utilized: 950.36 GB
-Memory Efficiency: 127.56% of 745.00 GB
-```
-Here we see that this job has been memory constrained so the CPU time was not efficiently utilized, and should be re-run with more memory
-
-
-
-#### Quality of life things
-Get an
-
-### Appendix A: command-line
-* Get around
-  * `cd /relative/or/absolute/path/to/dir/` go to a specific directory
-  * `cd ..` go back one directory
-  * `cd` without arguments bring you to home (sometimes)
-  * `pwd` tells you where you are
- 
-
-### Advanced
-There are limits on the number of resources a single person or job can request. Some of the limits are set at the user level (across all their jobs), most are set at the partition (and "qos") levels.
-```bash
-scontrol show partition general
-sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtrespu%20,maxjobs,mintres,MaxSubmitJobsPerUser,maxtrespa
-sacctmgr show user where name=<ONYEN> withassoc format=user,DefaultQOS,account%20,qos
-```
-
-### Get help
-Please don’t waste too much time, these problems are hard when you’ve not been introduced to them. Ask to the:
-* `#computing channel` on the UNC-IDD Slack
-* research@unc.edu (business hours, M-F)
-
-Both are very helpful if you provide enough details! Always provide the full error message + your onyen and the job ID if known.
-SLURM is universal, so Google and LLMs can help
 
 
 

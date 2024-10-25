@@ -4,23 +4,24 @@ Follow the steps listed on [Request a Cluster Account](https://help.rc.unc.edu/r
 
 ## A. Storage on longleaf
 ### home space
-Your home directory will be in `/nas/longleaf/home/<onyen>` and is backed up via snapshots.
-Your home directory has a quota which you will want to monitor occasionally: 50 GB soft limit and a 75 GB hard limit.
+* Your home directory will be in `/nas/longleaf/home/<onyen>`
+* backed up
+* quota: 50 GB soft limit and a 75 GB hard limit ⚠️
 
 ### `/users/<o>/<n>/<onyen>` storage
-Think of it as a capacity expansion to your home directory.
-High capacity storage
-OK to compute against, however as IO increases, consider copying or moving to /work for processing
-OK to hold inactive data sets like a near-line archive
-
-10 TB quota 
+* Capacity expansion to your home directory.
+* OK to compute against, however as IO increases, consider copying or moving to /work for processing
+* OK to hold inactive data sets like a near-line archive
+* 10 TB quota per user
 ### `/work/users/<o>/<n>/<onyen>` storage
 * built for high-throughput and data-intensive computing, and intended for data actively being computed on, accessed and processed by systems such as Longleaf
 * NOT intended to be a personal storage location; /work is for data actively being processed with high IO requirements
-* There is a 10 TB quota per user.
+* 10 TB quota per user. Be fair and don't store much (in other university, there would be an auto-delete policy
 
 ### `/proj` storage Proj Space
-`/proj` space is available to PIs (only, email research@unc.edu) upon request. An home directory for a team 
+* equivalent to home directory for a team 
+* `/proj` space is available to PIs (only, email research@unc.edu) upon request.
+* Shared datasets, code, ...
 
 
 ## 1. Connect to longleaf

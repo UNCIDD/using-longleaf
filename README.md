@@ -1,7 +1,6 @@
 # using-longleaf
 
 * Open On-demand link: https://ondemand.rc.unc.edu
-* 
 
 ## Workflow
 ### Checklist for submitting a slurm job

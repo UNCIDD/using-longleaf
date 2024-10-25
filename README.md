@@ -72,6 +72,68 @@ This gets you to your home folder (/nas/longleaf/home/<onyen>) on a login node
 * Save current session's list of modules to load automatically every time I log in and for every job: `module save`
 
 
+
+## X. Slurm script
+
+### Examples (copy these and adapt)
+#### Single cpu R job, general partition, 
+7-day runtime limit, 10 GB memory limit
+```bash
+#!/bin/bash
+#SBATCH -p general
+#SBATCH -N 1
+#SBATCH -t 07-00:00:00
+#SBATCH --mem=10g
+#SBATCH -n 1
+#SBATCH --mail-type=BEGIN, END
+#SBATCH --mail-user=YOURONYEN@email.unc.edu
+
+module purge
+module load r/4.2.1
+
+Rscript mycode.R
+```
+As this job is long, I have added two sbatch command to send me an email at the start and the end of the job (you could also add `FAIL`, `ALL`, `TIME_LIMIT`, `ARRAY_TASKS`, ...)
+
+#### Multi-core R job
+Submits a 24-core, single-node R job. Here your R script needs to handle the parallelization itself (e.g. because it calls stan, or `doParallel`)
+general partition, 2-hour runtime limit, 3 GB memory limit.
+```bash
+#!/bin/bash
+#SBATCH -p general
+#SBATCH -N 1
+#SBATCH -t 02:00:00
+#SBATCH --mem=3g
+#SBATCH -n 24
+
+Rscript mycode.R
+```
+
+if you need more memory, replace `#SBATCH --mem=3g` by e.g:
+```bash
+#SBATCH --qos=bigmem_access 
+#SBATCH --mem=500g
+```
+
+
+#### 1 node (N) 1 task (n) to the general partition  for 2 days and 20 hours, with this task needing 256 cpus
+```bash
+#!/bin/bash
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH -p general
+#SBATCH --mem=450g
+#SBATCH -c 256
+#SBATCH -t 02-20:00:00
+module purge
+flepimop-calibrate -c config_SMH_Flu_2024_R1_allflu_medVax_H3_training_monthly_emcee.yml --nwalkers 1000 --jobs 500 --niterations 5000 --nsamples 250 --id SMH_Flu_2024_R1_allflu_medVax_H3_training_monthly_emcee-20241004_120000-BIG  > out_fit256.out 2>&1
+```
+
+
+
+#### Quality of life things
+Get an
+
 ### Appendix A: command-line
 * Get around
   * `cd /relative/or/absolute/path/to/dir/` go to a specific directory

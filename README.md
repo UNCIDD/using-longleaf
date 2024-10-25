@@ -96,15 +96,15 @@ with `a` for recursive, `v` for verbose (view progress),  `--include/exclude=` f
 * `-N (--nodes=)`
 * `-N 1` for all longleaf jobs [dogwood allows more]
 
+If you want to change open-on demand defaults, add them to **Additional Job Submission Arguments**, e.g 
+<img width="641" alt="Screenshot 2024-10-25 at 05 42 34" src="https://github.com/user-attachments/assets/087753a0-44f3-4b6b-bbf3-62a9c68b707e">
 
 ## 4. Run your job
 Run the job:
 ```batch
 sbatch my_batch_script.run
 ```
-This command return immediately, you can go and run other jobs, party and all until it finishes. But you might want to monito
-
-
+This command returns immediately, you can go and run other jobs, party and all until it finishes. But you might want to monitor it.
 
 ## Monitor and Diagnosis
 ### During my run
@@ -161,7 +161,23 @@ Here we see that this job has been memory constrained so the CPU time was not ef
 
 
 #### Quality of life things
-Get an
+##### Not having to enter your ssh password every time
+(see also [unix - How do I set up SSH so I don't have to type my password? - Super User](https://superuser.com/questions/8077/how-do-i-set-up-ssh-so-i-dont-have-to-type-my-password))
+Type on your computer
+```bash
+ssh-keygen
+ssh-copy-id -i ~/.ssh/id_rsa.pub chadi@longleaf.unc.edu
+```
+
+##### Not having to enter your git password 6 times per day
+Already installed
+Type the following line so git remembers your credential and you don't have to enter your token 6 times per day:
+```bash
+git config --global credential.helper store
+git config --global user.name "{NAME SURNAME}"
+git config --global user.email YOUREMAIL@EMAIL.COM
+git config --global pull.rebase false # so you use merge as the default reconciliation method
+```
 
 
 ### Get help
@@ -177,7 +193,7 @@ There are limits on the number of resources a single person or job can request.Â
 ```bash
 scontrolÂ show partition general
 sacctmgr show qos format=name%15,mintres,grptres,maxtres%20,maxtrespernode,maxtrespu%20,maxjobs,mintres,MaxSubmitJobsPerUser,maxtrespa
-sacctmgr s
+```
 
 ### Appendix B: command-line
 * Get around
